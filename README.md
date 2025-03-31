@@ -21,7 +21,7 @@ Un système de gestion de relation client (CRM) développé avec Django, permett
 
 ```bash
 git clone https://github.com/votre-username/crm-minimaliste.git
-cd crm-minimaliste
+cd crm
 ```
 
 ### Lancer l'application avec Docker

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Clients</title>
+    <style>
+        .dashboard {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .stat {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Dashboard des Clients</h1>
+
+        <!-- Statistiques -->
+        <div class="stat">
+            <h3>Total des Clients : {{ total_clients }}</h3>
+            <h3>Clients créés récemment : {{ recent_count }}</h3>
+        </div>
+
+        <!-- Formulaire de Recherche -->
+        <div class="search">
+            <form method="GET">
+                <input type="text" name="search" placeholder="Rechercher par nom, email..." value="{{ search_query }}">
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+
+        <!-- Tableau des Clients -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Date de Création</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if clients %}
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.first_name }} {{ client.last_name }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun client trouvé.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
