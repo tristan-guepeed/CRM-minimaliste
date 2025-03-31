@@ -29,10 +29,14 @@ cd crm
 1. Construire et démarrer les conteneurs Docker:
 
 ```bash
+docker-compose build
+```
+
+```bash
 docker-compose up -d
 ```
 
-Cette commande va:
+Ces commandes vont:
 - Créer une base de données PostgreSQL
 - Configurer l'environnement Django
 - Appliquer les migrations de base de données
@@ -59,33 +63,32 @@ Accédez à l'application via votre navigateur à l'adresse: http://localhost:80
 L'API est accessible à la racine `/api/`:
 
 - **Authentification**:
-  - POST `/api/auth/register/`: Créer un nouvel utilisateur
-  - POST `/api/auth/login/`: Obtenir un token JWT
-  - POST `/api/auth/refresh/`: Rafraîchir un token JWT
+  - POST `/register/`: Créer un nouvel utilisateur
+  - POST `/login/`: Obtenir un token JWT
+  - POST `/api/token/refresh/`: Rafraîchir un token JWT
 
 - **Clients**:
-  - GET `/api/clients/`: Liste de tous les clients
-  - GET `/api/clients/<id>/`: Détails d'un client spécifique
-  - POST `/api/clients/`: Créer un nouveau client
-  - PUT `/api/clients/<id>/`: Mettre à jour un client existant
-  - DELETE `/api/clients/<id>/`: Supprimer un client
+  - GET `/clients/`: Liste de tous les clients
+  - GET `/clients/<uuid>/`: Détails d'un client spécifique
+  - POST `/clients/create`: Créer un nouveau client
+  - PUT `/clients/<uuid>/`: Mettre à jour un client existant
+  - DELETE `/clients/<uuid>/`: Supprimer un client
 
 ### Format des requêtes API
 
 Pour créer un client (exemple):
 
 ```json
-POST /api/clients/
+POST clients/create/
 Authorization: Bearer <votre_token_jwt>
 Content-Type: application/json
 
 {
-  "nom": "Dupont",
-  "prenom": "Jean",
+  "first_name": "Jean",
+  "last_name": "Dupont",
   "email": "jean.dupont@exemple.fr",
-  "telephone": "0123456789",
-  "entreprise": "ACME Inc.",
-  "notes": "Client premium"
+  "phone_number": "0123456789",
+  "adress": "124 Rue Malmort"
 }
 ```
 
@@ -94,26 +97,43 @@ Content-Type: application/json
 ### Structure du projet
 
 ```
-crm-minimaliste/
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-├── manage.py
-├── crm/
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── clients/
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── urls.py
-└── authentication/
-    ├── models.py
-    ├── views.py
-    ├── serializers.py
-    └── urls.py
+CRM-minimaliste
+    ├── README.md
+    └── crm
+        ├── Dockerfile
+        ├── clients
+        │   ├── migrations
+        │   │   ├── 0001_initial.py
+        │   │   └── __init__.py
+        │   ├── models.py
+        │   ├── serializers.py
+        │   ├── templates
+        │   │   └── dashboard.html
+        │   ├── tests
+        │   │   ├── test_create_view.py
+        │   │   ├── test_delete_by_id_view.py
+        │   │   ├── test_get_all_view.py
+        │   │   ├── test_get_by_id_view.py
+        │   │   └── test_update_view.py
+        │   ├── urls.py
+        │   └── views.py
+        ├── crm
+        │   ├── __init__.py
+        │   ├── admin.py
+        │   ├── asgi.py
+        │   ├── migrations
+        │   ├── models.py
+        │   ├── serializers.py
+        │   ├── settings.py
+        │   ├── tests
+        │   │   ├── test_login_view.py
+        │   │   └── test_register_view.py
+        │   ├── urls.py
+        │   ├── views.py
+        │   └── wsgi.py
+        ├── docker-compose.yml
+        ├── manage.py
+        └── requirements.txt
 ```
 
 ### Commandes utiles
@@ -149,7 +169,7 @@ crm-minimaliste/
 ## Informations supplémentaires
 
 - Base de données: PostgreSQL 16
-- Backend: Django 5.0 avec Django REST framework
+- Backend: Django 5.1 avec Django REST framework
 - Authentification: JWT (JSON Web Tokens)
 
 ## Dépannage
