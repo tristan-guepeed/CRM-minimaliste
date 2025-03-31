@@ -94,6 +94,22 @@ Content-Type: application/json
 
 ## Développement
 
+### Tests
+
+Pour lancer les tests :
+
+```bash
+coverage run manage.py test */tests
+```
+
+Pour voir le coverage :
+
+```bash
+coverage html
+```
+
+Puis ouvrir le fichier index.html dans le dossier htmlcov
+
 ### Structure du projet
 
 ```
